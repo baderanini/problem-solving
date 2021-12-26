@@ -31,9 +31,7 @@ class Solution {
             ListNode temp = resIter.next;
             resIter.next = secondPartIter;
             ListNode secondPartTemp = secondPartIter.next;
-            if(temp == null)
-                secondPartIter.next = secondPartTemp;
-            else
+            if(temp != null)
                 secondPartIter.next = temp;
             secondPartIter = secondPartTemp;
             resIter = temp;
