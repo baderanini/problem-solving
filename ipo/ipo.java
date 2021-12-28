@@ -14,6 +14,8 @@ class Solution {
             
             if(!maxProfit.isEmpty())
                 w += profits[maxProfit.poll()];
+            else
+                break;
         }
         
         return w;
