@@ -25,18 +25,21 @@ class Solution {
         Arrays.fill(result, -1);
         
         PriorityQueue<Interval> maxStart = new PriorityQueue<>((x, y) -> Integer.compare(y.start, x.start));
-        PriorityQueue<Interval> minStart = new PriorityQueue<>((x, y) -> Integer.compare(x.start, y.start));
         
         for(Interval interval: ints)
             maxStart.offer(interval);
 
+        Interval minStart = null;
         for(int i = ints.length - 1 ; i >= 0 ; i--) {
             Interval curr = ints[i];
-            while(!maxStart.isEmpty() && maxStart.peek().start >= curr.end)
-                minStart.offer(maxStart.poll());
+            while(!maxStart.isEmpty() && maxStart.peek().start >= curr.end) {
+                Interval nextMaxStart = maxStart.poll();
+                if(minStart == null || nextMaxStart.start < minStart.start)
+                    minStart = nextMaxStart;
+            }
             
-            if(!minStart.isEmpty())
-                result[curr.index] = minStart.peek().index;
+            if(minStart != null)
+                result[curr.index] = minStart.index;
         }
         
         return result;
