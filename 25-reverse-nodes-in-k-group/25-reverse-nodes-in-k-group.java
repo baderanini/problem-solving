@@ -20,6 +20,8 @@ class Solution {
             sizeIter = sizeIter.next;
         }
         
+        size = size/k*k;
+        
         if(size == 1 || k == 1)
             return head;
         
@@ -29,7 +31,7 @@ class Solution {
         int index = 0;
         while(iter != null) {
             index++;
-            if(index > size/k*k)
+            if(index > size)
                 break;
             if(counter == 1) {
                 subStart = iter;
