@@ -9,18 +9,16 @@ class Solution {
     
     
     int dfs(Queue<String> tokens) {
-        if(tokens.isEmpty())
-            return 0;
         String token = tokens.poll();
         switch(token) {
-                case "+": return dfs(tokens) + dfs(tokens);
-                case "-": return -dfs(tokens) + dfs(tokens);
-                case "*": return dfs(tokens) * dfs(tokens);
-                case "/": {
-                    int divider = dfs(tokens), divident = dfs(tokens); 
-                    return divident/divider;
-                }
-                default: return Integer.parseInt(token);
+            case "+": return dfs(tokens) + dfs(tokens);
+            case "-": return -dfs(tokens) + dfs(tokens);
+            case "*": return dfs(tokens) * dfs(tokens);
+            case "/": {
+                int divider = dfs(tokens), divident = dfs(tokens); 
+                return divident/divider;
             }
+            default: return Integer.parseInt(token);
+        }
     }
 }
