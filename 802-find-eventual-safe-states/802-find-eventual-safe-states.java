@@ -1,7 +1,7 @@
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graphArr) {
         Map<Integer, Set<Integer>> graph = buildGraph(graphArr);
-        Map<Integer, Integer> memo = new HashMap<>();
+        int[] memo = new int[graph.size()];
         List<Integer> result = new ArrayList<>();
         for(int i = 0 ; i < graph.size() ; i++) {
             if(dfs(graph, i, memo))
@@ -11,18 +11,17 @@ class Solution {
         return result;
     }
     
-    final int IN_CALL_STACK = 0, TRUE_RESULT = 1, FALSE_RESULT = 2;
+    final int IN_CALL_STACK = 1, TRUE_RESULT = 2, FALSE_RESULT = 3;
     
-    boolean dfs(Map<Integer, Set<Integer>> graph, int node, Map<Integer, Integer> memo) {        
-        if(memo.containsKey(node)) {
-            if(memo.get(node) == IN_CALL_STACK || memo.get(node) == FALSE_RESULT) {
-                memo.put(node, FALSE_RESULT);
-                return false;
-            } else
-                return true;
-        }
+    boolean dfs(Map<Integer, Set<Integer>> graph, int node, int[] memo) {        
+        
+        if(memo[node] == IN_CALL_STACK || memo[node] == FALSE_RESULT) {
+            memo[node] = FALSE_RESULT;
+            return false;
+        } else if(memo[node] == TRUE_RESULT)
+            return true;
 
-        memo.put(node, IN_CALL_STACK);
+        memo[node] = IN_CALL_STACK;
         
         boolean result = true;
         for(int neighbor: graph.get(node)) {
@@ -32,7 +31,7 @@ class Solution {
             }   
         }
         
-        memo.put(node, result ? TRUE_RESULT : FALSE_RESULT);
+        memo[node] = result ? TRUE_RESULT : FALSE_RESULT;
         return result;
     }
     
