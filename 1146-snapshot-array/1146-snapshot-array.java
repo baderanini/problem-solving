@@ -1,16 +1,7 @@
-class EntrySnap {
-    int snapId;
-    int val;
-    
-    EntrySnap(int snapId, int val) {
-        this.snapId = snapId;
-        this. val = val;
-    }
-}
-
 class SnapshotArray {
-            
-    Map<Integer, ArrayList<EntrySnap>> map;
+
+    final int SNAP_INDEX = 0, VAL_INDEX = 1;
+    Map<Integer, ArrayList<int[]>> map;
     int snapId = 0;
     public SnapshotArray(int length) {
         map = new HashMap<>();
@@ -19,7 +10,7 @@ class SnapshotArray {
     
     public void set(int index, int val) {
         map.putIfAbsent(index, new ArrayList<>());
-        map.get(index).add(new EntrySnap(snapId, val));
+        map.get(index).add(new int[] {snapId, val});
     }
     
     public int snap() {
@@ -27,20 +18,21 @@ class SnapshotArray {
     }
     
     public int get(int index, int snap_id) {
-        ArrayList<EntrySnap> setsPerIndex = map.getOrDefault(index, new ArrayList<>());
+        ArrayList<int[]> setsPerIndex = map.getOrDefault(index, new ArrayList<>());
         int l = 0, h = setsPerIndex.size() - 1;
         while(l <= h) {
             int mid = l + (h-l)/2;
-            if(setsPerIndex.get(mid).snapId > snap_id) {
+            if(setsPerIndex.get(mid)[SNAP_INDEX] > snap_id) {
                 h = mid - 1;
             } else {
                 l = mid + 1;
             }
         }
         
-        return h < 0 ? 0 : setsPerIndex.get(h).val;
+        return h < 0 ? 0 : setsPerIndex.get(h)[VAL_INDEX];
     }
 }
+
 
 /**
  * Your SnapshotArray object will be instantiated and called as such:
