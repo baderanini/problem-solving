@@ -1,49 +1,65 @@
-class Solution {
-    public int shortestPath(int[][] grid, int k) {
-        int[][][] memo = new int[grid.length][grid[0].length][k+1];
-        int result = dfs(grid, 0, 0, k, memo);
-        return result == Integer.MAX_VALUE ? -1 : result;
+class State {
+    int k;
+    int i;
+    int j;
+    
+    State(int k, int i, int j) {
+        this.k = k;
+        this.i = i;
+        this.j = j;
     }
     
-    int IN_CALL_STACK = 2, OBSTACLE = 1;
-    int dfs(int[][] grid, int i, int j, int k, int[][][] memo) {
-        if(i < 0 || j < 0 || i >= grid.length || j >= grid[0].length)
-            return Integer.MAX_VALUE;
+    @Override
+    public int hashCode() {
+        return Objects.hash(k, i, j);
+    }
+    
+    @Override
+    public boolean equals(Object t) {
+        if(t instanceof State) {
+            State tState = (State) t;
+            return tState.k == this.k && tState.i == this.i && tState.j == this.j;
+        }
+        return false;
+    }
+}
+
+class Solution {
+    
+    final int OBSTACLE = 1;
+    
+    public int shortestPath(int[][] grid, int k) {
+        Queue<State> q = new LinkedList<>();
         
-        if(memo[i][j][k] != 0) {
-            return memo[i][j][k];
+        q.offer(new State(k, 0, 0));
+        Set<State> visited = new HashSet<>();
+        int steps = 0;
+        while(!q.isEmpty()) {
+            int size = q.size();
+            
+            for(int i = 0 ; i < size ; i++) {
+                State currState = q.poll();
+                if(visited.contains(currState))
+                    continue;
+                visited.add(currState);
+                if(isValid(grid, currState)) {
+                    boolean isObstacle = grid[currState.i][currState.j] == OBSTACLE;
+                    if(currState.k > 0 || !isObstacle) {
+                        if(currState.i == grid.length-1 && currState.j == grid[0].length-1)
+                            return steps;
+                        int[][] template = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+                        for(int[] temp: template)
+                            q.offer(new State(isObstacle ? currState.k-1 : currState.k, currState.i + temp[0], currState.j + temp[1]));
+                    }
+                }
+            }
+            steps++;
         }
         
-        if(k < 0)
-            return Integer.MAX_VALUE;
-        if(k == 0 && grid[i][j] == OBSTACLE)
-            return Integer.MAX_VALUE;
-        
-        if(i == grid.length - 1 && j == grid[0].length - 1)
-            return 0;
-        
-        if(grid[i][j] == IN_CALL_STACK)
-            return Integer.MAX_VALUE;
-        
-        int cellVal = grid[i][j];
-        grid[i][j] = IN_CALL_STACK;
-        
-        int res = 0;
-        if(cellVal == OBSTACLE)
-            k--;
-        
-        int up =    dfs(grid, i-1, j, k, memo);
-        int down =  dfs(grid, i+1, j, k, memo);
-        int left =  dfs(grid, i, j-1, k, memo);
-        int right = dfs(grid, i, j+1, k, memo);
-        
-        int vertical = Math.min(up, down), horizontal = Math.min(left, right);
-        int total = Math.min(vertical, horizontal);
-        
-        int result = total == Integer.MAX_VALUE ? Integer.MAX_VALUE : (1 + total); 
-        
-        memo[i][j][k] = result;
-        grid[i][j] = cellVal;
-        return result;
+        return -1;
+    }
+    
+    boolean isValid(int[][] grid, State state) {
+        return state.i >= 0 && state.j >= 0 && state.i < grid.length && state.j < grid[0].length;
     }
 }
