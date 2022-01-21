@@ -47,7 +47,7 @@ class Solution {
                     if(currState.k > 0 || !isObstacle) {
                         if(currState.i == grid.length-1 && currState.j == grid[0].length-1)
                             return steps;
-                        int[][] template = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+                        int[][] template = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
                         for(int[] temp: template)
                             q.offer(new State(isObstacle ? currState.k-1 : currState.k, currState.i + temp[0], currState.j + temp[1]));
                     }
