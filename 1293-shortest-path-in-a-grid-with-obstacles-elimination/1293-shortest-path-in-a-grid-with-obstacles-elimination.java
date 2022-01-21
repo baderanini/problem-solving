@@ -7,12 +7,11 @@ class Solution {
     
     int IN_CALL_STACK = 2, OBSTACLE = 1;
     int dfs(int[][] grid, int i, int j, int k, int[][][] memo) {
-        int shit = k;
         if(i < 0 || j < 0 || i >= grid.length || j >= grid[0].length)
             return Integer.MAX_VALUE;
         
-        if(memo[i][j][shit] != 0) {
-            return memo[i][j][shit];
+        if(memo[i][j][k] != 0) {
+            return memo[i][j][k];
         }
         
         if(k < 0)
