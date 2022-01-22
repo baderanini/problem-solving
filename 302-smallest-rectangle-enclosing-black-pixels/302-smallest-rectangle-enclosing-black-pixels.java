@@ -1,10 +1,10 @@
 class Solution {
     public int minArea(char[][] image, int x, int y) {
-        int upper = findLimit(image, 0, x-1, false, false);
-        int lower = findLimit(image, x+1, image.length-1, false, true);
+        int upper = findLimit(image, 0, x-1, false, true);
+        int lower = findLimit(image, x+1, image.length-1, false, false);
         
-        int left = findLimit(image, 0, y-1, true, false);
-        int right = findLimit(image, y+1, image[0].length-1, true, true);
+        int left = findLimit(image, 0, y-1, true, true);
+        int right = findLimit(image, y+1, image[0].length-1, true, false);
                 
         return (lower-upper-1) * (right-left-1);
     }
@@ -15,17 +15,17 @@ class Solution {
             boolean condition = checkingCols ? colAllZeros(image, mid) : rowAllZeros(image, mid);
             if(condition) {
                 if(needsHigher)
-                    h = mid-1;
-                else
                     l = mid+1;
+                else
+                    h = mid-1;
             } else {
                 if(needsHigher)
-                    l = mid+1;
-                else
                     h = mid-1;
+                else
+                    l = mid+1;
             }
         }
-        return needsHigher ? l : h;
+        return needsHigher ? h : l;
     }
     
     boolean rowAllZeros(char[][] image, int row) {
