@@ -1,3 +1,5 @@
+// note: could be optimized by using int to represent the arr instead of serialized string [needs bit manipulation].
+
 class Solution {
     Set<String> visited = new HashSet<>();
     public int minFlips(int[][] mat) {
