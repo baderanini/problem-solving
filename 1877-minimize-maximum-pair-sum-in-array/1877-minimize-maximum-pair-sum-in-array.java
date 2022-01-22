@@ -13,24 +13,3 @@ class Solution {
         return min;
     }
 }
-
-
-/*
-min: max arr elem + min arr elem
-max: max arr elem + sec max ar elem
-
-[3,5,2,3]
-min: 5 + 2 = 7
-max: 5 + 3
-*/
-
-
-/*
-
-[3,5,4,2,4,6]
-[2,3,4,4,5,6]
-
-
-[2,3,4,4,10,15]
-
-*/
