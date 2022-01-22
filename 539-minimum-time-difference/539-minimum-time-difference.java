@@ -46,10 +46,9 @@ class Solution {
                 }
             }
         }
+
+        minDiff = Math.min(minDiff, calcDiff(lastTime, firstTime));
         
-        if(!currTime.equals(lastTime)) {
-            minDiff = Math.min(minDiff, calcDiff(lastTime, firstTime));
-        }
         return minDiff;
     }
     
