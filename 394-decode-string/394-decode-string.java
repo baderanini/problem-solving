@@ -1,3 +1,5 @@
+// TODO: rewrite a cleaner code.
+
 class Solution {
     public String decodeString(String s) {
         Stack<String> stack = new Stack();
