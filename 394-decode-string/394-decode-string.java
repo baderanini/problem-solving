@@ -1,5 +1,3 @@
-// stack [ 3 a cc
-//sb     [ 
 class Solution {
     public String decodeString(String s) {
         Stack<String> stack = new Stack();
@@ -68,7 +66,3 @@ class Solution {
         return sb.toString();
     }
 }
-
-/*
-"a2[a3[a2[ggg]]c]3[cd]ef"
-*/
