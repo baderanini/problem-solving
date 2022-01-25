@@ -21,34 +21,30 @@ class Solution {
     final int[] UP = {-1, 0}, RIGHT = {0, 1}, DOWN = {1, 0}, LEFT = {0, -1};
     int[][] movementTemplates = {UP, RIGHT, DOWN, LEFT};
     public void cleanRoom(Robot robot) {
-        Set<String> visited = new HashSet<>();
-        dfs(robot, 0, 0, visited, 0);
+        dfs(robot, 0, 0, new HashSet<>(), 0);
     }
     
     void dfs(Robot robot, int dx, int dy, Set<String> visited, int dir) {
         String cellKey = dx + "," + dy;
-        if(visited.contains(cellKey)) {
-            robot.turnRight();
-            robot.turnRight();
-            robot.move();
-            return;
-        }
-        visited.add(cellKey);
-        robot.clean();
+        if(!visited.contains(cellKey)) {
+            visited.add(cellKey);
+            robot.clean();
         
-        for(int i = 0 ; i < 4 ; i++) {
-            int newDir = (dir+i)%4;
-            int[] movementTemplate = movementTemplates[newDir];
-            if(robot.move()) {
-                dfs(robot, dx+movementTemplate[0], dy+movementTemplate[1], visited, newDir);
-                robot.turnRight();
+            for(int i = 0 ; i < 4 ; i++) {
+                int newDir = (dir+i)%4;
+                int[] movementTemplate = movementTemplates[newDir];
+                if(robot.move()) {
+                    dfs(robot, dx+movementTemplate[0], dy+movementTemplate[1], visited, newDir);
+                }
                 robot.turnRight();
             }
-            robot.turnRight();
         }
         
+        // BACKTRACK: undo movement.
         robot.turnRight();
         robot.turnRight();
         robot.move();
+        robot.turnRight();
+        robot.turnRight();
     }
 }
